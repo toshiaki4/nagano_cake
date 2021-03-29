@@ -1,0 +1,18 @@
+<span style="color:#000000; background-color:#C0C0C0;">商品新規登録</span>
+<%= form_with model: @item, url: admin_items_path, method: :post, local:true do |f| %>
+  <span>商品画像</span>
+  <%= f.attachment_field :image %><br>
+  <span>商品名</span>
+  <span><%= f.text_field :name, :size=>"30", placeholder: '商品名' %></span><br>
+  <span>商品説明</span>
+  <span><%= f.text_area :introduction, :size=>"30x5", placeholder: 'ここに説明⽂を記述します' %></span><br>
+  <span>ジャンル</span>
+ 
+ <%= f.collection_select :genre_id, Genre.all, :id, :name %><br>
+  <span>税抜価格</span>
+  <span><%= f.text_field :price, :size=>"30", placeholder: '1000' %>円</span><br>
+  <span>販売ステータス</span>
+ <%= f.radio_button :is_active, true, checked:true %>販売中
+ <%= f.radio_button :is_active, false %>販売停止中<br>
+  <%= f.submit '新規登録', class:"btn btn-success" %><br>
+<% end %>

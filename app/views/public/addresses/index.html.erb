@@ -1,0 +1,32 @@
+<span style="color:#000000; background-color:#C0C0C0;">配送先登録/一覧</span>
+<%= form_with model: @address, url: public_addresses_path, local:true do |f| %>
+郵便番号(ハイフンなし)<%= f.text_field :postal_code, placeholder: '0000000' %><br>
+住所<%= f.text_field :address, :size=>"60", placeholder: '東京都渋⾕区代々⽊神園町0-0' %><br>
+宛名<%= f.text_field :name, placeholder: '令和道⼦' %><%= f.submit '新規登録', class:"btn btn-success" %>
+<% end %>
+<table class='table table-hover table-inverse'>
+<div class="container">
+  <div class="row">
+    <thead>
+    <tr>
+      <th bgcolor="#c0c0c0">郵便番号</th>
+      <th bgcolor="#c0c0c0">住所</th>
+      <th bgcolor="#c0c0c0">宛名</th>
+      <th bgcolor="#c0c0c0"></th>
+    </thead> 
+    <tbody>
+      
+        <% @addresses.each do |address| %>
+        <tr>
+          <td><%= address.postal_code %></td>
+          <td><%= address.address %></td>
+          <td><%= address.name %></td>
+          <td><%= link_to "編集する", edit_public_address_path(address), class:"btn btn-success" %>
+          <%= link_to "削除する", public_address_path(address), method: :delete, class:"btn btn-danger"%></td>
+        </tr>  
+        <% end %>
+        
+    </tbody>
+  </div>        
+</div>
+</table>

@@ -1,0 +1,5 @@
+<span style="color:#000000; background-color:#C0C0C0;">ジャンル編集</span>
+<%= form_with model: @genre, url: admin_items_path(@genre), method: :post, local:true do |f| %>
+<span>ジャンル名</span>
+<%= f.text_field :name %><%= f.submit '変更を保存', class:"btn btn-success" %>
+<% end %>

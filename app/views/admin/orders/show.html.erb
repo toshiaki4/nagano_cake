@@ -1,0 +1,64 @@
+<span style="color:#000000; background-color:#C0C0C0;">注⽂履歴詳細</span>
+<%= form_with model: @order, url: admin_order_path(@order), local:true do |f| %>
+<table>
+<tr>    
+    <th>購入者</th>
+    <td><%= @order.name %></td>
+</tr>
+<tr>
+    <th>注文日</th>
+    <td><%= @order.created_at.strftime("%Y/%m/%d") %></td>
+</tr>
+<tr>
+    <th>配送先</th>
+    <td><%= @order.shipping_address %></td>
+</tr>
+<tr>
+    <th>支払方法</th>
+    <td><%= @order.payment_method %></td>
+</tr>
+<tr>
+    <th>注文ステータス</th>
+    <td><%= f.select :order_status, Order.order_statuses.keys %><%= f.submit '更新', class:"btn btn-success" %></td><br>
+</tr>
+
+
+</tr>
+</table>
+<% end %>
+<table class="table">
+    <tr>    
+        <th scope="col">商品名</th>
+        <th scope="col">単価</th>
+        <th scope="col">数量</th>
+        <th scope="col">小計</th>
+        <th scope="col">制作ステータス</th>
+    </tr>
+    
+        <% @order.order_details.each do |order_detail| %>
+    <tr>    
+        <td><%= order_detail.item.name %></td>
+        <td><%= order_detail.price %></td>
+        <td><%= order_detail.amount %></td>
+        <td><%= order_detail.price * order_detail.amount %></td>
+            <%= form_with model: order_detail, url: admin_order_detail_path(order_detail), local:true do |f| %>
+            <td><%= f.select :production_status, OrderDetail.production_statuses.keys %><%= f.submit '更新', class:"btn btn-success" %></td>
+            <% end %>
+            
+        <% end %>
+    
+</table>
+<table>
+<tr>
+    <th>商品合計</th>
+    <td><%= @order.total_amount - 800 %></td>
+</tr>
+<tr>
+    <th>送料</th>
+    <td>800円</td>    
+</tr>
+<tr>
+    <th>請求金額合計</th>
+    <td><%= @order.total_amount %></td>
+</tr>
+</table>

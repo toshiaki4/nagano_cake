@@ -1,0 +1,8 @@
+配送先編集
+<%= form_with model: @address, url: public_address_path(@address), local:true do |f| %>
+郵便番号（ハイフンなし）<%= f.text_field :postal_code %><br>
+住所<%= f.text_field :address %><br>
+宛名<%= f.text_field :name %>
+<span><%= f.submit '変更内容を保存', class:"btn btn-success" %></span>
+<% end %>
+

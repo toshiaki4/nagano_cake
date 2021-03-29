@@ -1,0 +1,41 @@
+<span style="color:#000000; background-color:#C0C0C0;">注⽂情報⼊⼒</span>
+<%= form_with model: Order.new, url: public_orders_order_confirm_path, local:true do |f| %>
+
+<b>⽀払⽅法</b><br>
+    <%= f.radio_button :payment_method, :'クレジットカード', checked: true %>クレジットカード<br>
+    <%= f.radio_button :payment_method, :'銀行振込' %>銀行振込<br>
+    
+  
+<b>お届け先</b><br>
+    <%= f.radio_button :add, 1, checked: true  %>ご自身の住所<br>
+    <%= current_customer.postal_code %>
+    <%= current_customer.address %><br>
+    <%= current_customer.last_name %>
+    <%= current_customer.first_name %><br>
+    <%= f.radio_button :add, 2 %>登録済住所から選択<br>
+    <%#= f.select :address, [ ['〒1600022 東京都新宿区新宿2-5-10成信ビル 4階 鈴⽊太郎']] %>
+    <%#= f.collection_select :address, オブジェクトの配列, value属性の項目, テキストの項目 [, オプション or HTML属性 or イベント属性]) %>
+    <%= f.collection_select(:address, @addresses, :id,  :name_address_postal_code, prompt: "お届け先を選択してください") %><br>
+    <%= f.radio_button :add, 3 %>新しいお届け先<br>
+    
+    郵便番号（ハイフンなし）
+    <%= f.text_field :postal_code, placeholder: '0000000' %><br>
+    住所
+    <%= f.text_field :shipping_address, :size=>"60", placeholder: '東京都渋⾕区代々⽊神園町0-0'  %><br>
+    宛名
+    <%= f.text_field :name, placeholder: '令和道⼦'  %>
+    
+
+
+<div class="form-group">
+    <%= f.submit "確認画⾯へ進む",  class:"btn btn-primary" %>
+</div>
+  
+  
+
+
+
+  
+<% end %>
+
+

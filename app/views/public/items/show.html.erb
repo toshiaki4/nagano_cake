@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="row">
+    <%= link_to item_path(@item.id) do %>
+    <div class="col-md-6">
+        <%= attachment_image_tag @item, :image, fallback: "no_image.jpg", format: 'jpeg', size: "250x150" %><br>
+    <% end %>
+    </div>
+    <div class="col-md-6">
+      <b><%= @item.name %></b><br>
+      <span><%= @item.introduction %></span><br>
+      ¥<%= (@item.price * 1.1).floor.to_s(:delimited) %>(税込)
+    
+    <%= form_with model: @cart_items, url: public_cart_items_path do |cart_item| %>
+    
+      <%= cart_item.number_field :amount, min: 1, :placeholder => "個数選択"%>
+      <%= cart_item.submit "カートに入れる", class:"btn btn-sm btn-success" %>
+      <%= cart_item.hidden_field :item_id, value: @item.id %>
+      <%= cart_item.hidden_field :customer_id, value: current_customer.id %>
+    <% end %>
+    </div>
+  </div>  
+</div>

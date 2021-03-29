@@ -1,0 +1,20 @@
+<span style="color:#000000; background-color:#C0C0C0;">管理者ログイン</span>
+<%= form_with model:@admin, url:admin_session_path, local:true do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <div class="field">
+    <%= f.label :"メールアドレス" %>
+    <%= f.text_field :email, autofocus: true, :size=>"60", placeholder: 'sample@example.com', autocomplete: "email" %>
+  </div>
+  
+  
+  <div class="field">
+    <%= f.label :"パスワード" %>
+    <%= f.password_field :password,  autofocus: true, :size=>"60", autocomplete: "password" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "ログイン", class:"btn btn-sm btn-primary" %>
+  </div>
+<% end %>
+

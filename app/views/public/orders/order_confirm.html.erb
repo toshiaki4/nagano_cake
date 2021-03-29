@@ -1,0 +1,62 @@
+<span style="color:#000000; background-color:#C0C0C0;">注⽂情報確認</span>
+
+<div class="container">
+  <div class="row">
+    <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th bgcolor="#c0c0c0">商品名</th>
+            <th bgcolor="#c0c0c0">単価(税込)</th>
+            <th bgcolor="#c0c0c0">数量</th>
+            <th bgcolor="#c0c0c0">小計</th>
+        </tr>    
+    </thead>
+    <tbody>
+      <% total_price = 0 %>
+        <% current_customer.cart_items.each do |cart_item| %>
+          <tr>
+              <td><%= attachment_image_tag cart_item.item, :image, fallback: "no_image.jpg", format: 'jpeg', size: "40x40" %><%= cart_item.item.name %></td>
+              <td><%= (cart_item.item.price * 1.1).floor.to_s(:delimited) %></td>
+              <td><%= cart_item.amount %></td>
+              <td><%= (cart_item.item.price * 1.1 * cart_item.amount).floor.to_s(:delimited)%></td>
+          </tr>
+          <% total_price += (cart_item.item.price * 1.1 * cart_item.amount).round %>
+        <% end %>
+    </tbody>    
+    </table>
+    <table class="table table-bordered">
+    <thead>
+      <tr>    
+        <th bgcolor="#c0c0c0">送料</th>
+        <td>800</td>
+      </tr>  
+      <tr>  
+        <th bgcolor="#c0c0c0">商品合計</th>
+        <td><%= total_price.to_s(:delimited) %></td>
+      </tr>  
+      <tr>  
+        <th bgcolor="#c0c0c0">請求金額</th>
+        <td><%= (total_price += 800).to_s(:delimited) %></td>
+      </tr>
+      <tr>
+      </tr>
+    </thead>
+    </table>
+  </div>        
+</div>
+<%= form_with model: @order, url: public_orders_path, local:true do |f| %>
+<%= f.hidden_field :postal_code, :value => @order.postal_code %>
+<%= f.hidden_field :shipping_address, :value => @order.shipping_address %>
+<%= f.hidden_field :name, :value => @order.name %>
+<%= f.hidden_field :shipping, :value => 800 %>
+<%= f.hidden_field :total_amount, :value => total_price %>
+<%= f.hidden_field :payment_method, :value => @order.payment_method %>
+<b>支払方法</b>
+<%= @order.payment_method %><br>
+<b>お届け先</b>
+<%= @order.postal_code %>
+<%= @order.shipping_address %><br>
+<%= @order.name %><br>
+
+  <%= f.submit "注⽂を確定する", class:"btn btn-success"%>
+<% end %>

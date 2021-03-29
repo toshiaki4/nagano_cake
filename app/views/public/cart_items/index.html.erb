@@ -1,0 +1,59 @@
+<div class="container">
+  <div class="row">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th bgcolor="#c0c0c0">商品名</th>
+          <th bgcolor="#c0c0c0">単価(税込)</th>
+          <th bgcolor="#c0c0c0">数量</th>
+          <th bgcolor="#c0c0c0">小計</th>
+          <th bgcolor="#c0c0c0"></th>
+        </tr>
+        
+          <span style="color:#000000; background-color:#C0C0C0;">ショッピングカート</span>
+          <div class="text-right">
+            <%= link_to "カートを空にする", public_cart_items_destroy_all_path, method: :delete, class:"btn btn-danger"%>
+          </div>
+          <% @cart_items.each do |cart_item|  %>
+          <tr>
+              <!--<span>商品名</span>-->
+            <td><%= attachment_image_tag cart_item.item, :image, fallback: "no_image.jpg", format: 'jpeg', size: "40x40" %><%= cart_item.item.name %></td>
+            <!--<span>税込み価格</span>-->
+            <td><%= (cart_item.item.price * 1.1).floor.to_s(:delimited) %></td>
+            
+            <!--<span>数量</span>-->
+            <%= form_with model: cart_item, url: public_cart_item_path(cart_item) do |f| %>
+              <td><%= f.number_field :amount, min: 1 %><%= f.submit '変更', class:"btn btn-success" %></td>
+            <% end %>
+            <!--<span>小計</span>-->
+            <td><%= (cart_item.item.price * cart_item.amount * 1.1).floor.to_s(:delimited) %></td>
+            
+            <td><%= link_to "削除する", public_cart_item_path(cart_item.id), method: :delete, class:"btn btn-danger"%></td>
+          </tr>    
+          <% end %>
+          <!--<span>合計金額</span><br>-->
+          
+          
+          
+      </thead>    
+    </table>
+    <table class="table table-bordered">
+      
+      <% x = 0 %>
+      <% @cart_items.each do |cart_item| %>
+        <% x += (cart_item.item.price * cart_item.amount * 1.1).floor %>
+      <% end %>
+      <div class="container">
+<div class="row">
+<div class="col-lg-12">
+      <tr>
+        <th bgcolor="#c0c0c0">合計金額</th>
+        <td><%= x.to_s(:delimited) %></td>
+      </tr>
+    </table>
+    <%= link_to "買い物を続ける", items_path, class:"btn btn-primary" %><br>
+          
+    <%= link_to "情報入力に進む", new_public_order_path, class:"btn btn-success" %><br>
+  </div>    
+</div>
+
